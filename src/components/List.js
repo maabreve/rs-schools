@@ -15,19 +15,23 @@ const List = ({schools, currentLocation, currentSchool, actions}) => {
   //  console.log('List.js current location', currentLocation)
   }, [currentLocation, currentSchool]);
 
-  const handleSearch = (value) => {
-    actions.setLocation(value)
-  }
-
   const handleListItemClick = (school) => {
     actions.setCurrentSchool(school)
+  }
+
+  const handleSearch = (value) => {
+    actions.setCurrentLocation(value)
+  }
+
+  const handleLocateClick = (location) => {
+    actions.setCurrentLocation(location)
   }
 
   return (
     <div>
       <div className="px-15">
         <Search handleSearch={handleSearch} />
-        <Locate />
+        <Locate handleLocateClick={handleLocateClick} />
       </div>
       <div>
         <ListGroup>
@@ -66,8 +70,10 @@ function mapDispatchToProps(dispatch) {
   return {
     actions: {
       loadSchools: bindActionCreators(schoolsActions.loadSchools, dispatch),
-      setCurrentSchool: bindActionCreators(currentSchoolsActions.setCurrentSchool, dispatch),
-      setLocation: bindActionCreators(locationActions.setLocation, dispatch),
+      setCurrentSchool:
+        bindActionCreators(currentSchoolsActions.setCurrentSchool, dispatch),
+      setCurrentLocation:
+        bindActionCreators(locationActions.setCurrentLocation, dispatch),
     }
   };
 }

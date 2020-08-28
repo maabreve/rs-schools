@@ -1,11 +1,11 @@
 import * as types from "./actionTypes";
 
-export function setLocationSuccess(currentLocation) {
+export function setCurrentLocationSuccess(currentLocation) {
   return { type: types.SET_CURRENT_LOCATION, currentLocation };
 }
 
-export function setLocation(currentLocation) {
+export function setCurrentLocation(currentLocation) {
   return function(dispatch) {
-    dispatch(setLocationSuccess(currentLocation));
+    dispatch(setCurrentLocationSuccess(currentLocation));
   };
 }

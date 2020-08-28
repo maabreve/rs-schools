@@ -29,7 +29,7 @@ const App = ({schools, currentLocation, currentSchool, loading, actions}) => {
     }
 
     // console.log('App.js current school', currentSchool);
-    // console.log('App.js current location', currentLocation);
+    console.log('App.js current location', currentLocation);
 
   }, [actions, schools, currentLocation, currentSchool]);
 

@@ -24,8 +24,14 @@ const Map = ({markers, currentLocation, currentSchool}) => {
   const mapRef = React.useRef();
 
   useEffect(() => {
-    console.log('Map.js current location', currentLocation)
-    console.log('Map.js current school', currentSchool)
+    if (Object.entries(currentSchool).length !== 0) {
+      setSelected(currentSchool);
+    }
+
+    if (Object.entries(currentLocation).length !== 0) {
+
+    }
+
   }, [currentLocation, currentSchool]);
 
 
@@ -59,6 +65,12 @@ const Map = ({markers, currentLocation, currentSchool}) => {
             }}
           />
         ))}
+        {Object.entries(currentLocation).length !== 0 ? (
+           <Marker
+              key="center-mark"
+              position={{ lat: currentLocation.lat, lng: currentLocation.lng }}
+          />
+        ) : null}
 
         {/* <Marker
           key="center-mark"
