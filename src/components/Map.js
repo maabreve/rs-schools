@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { GoogleMap, Marker, InfoWindow} from "@react-google-maps/api";
 
 import mapStyles from "../style/mapStyles";
@@ -15,16 +15,24 @@ const options = {
 };
 
 const center = {
-  lat: -30.0441,
-  lng: -51.2194
+  lat: -30.036288,
+  lng: -51.215899
 };
 
-const Map = ({markers}) => {
+const Map = ({markers, currentLocation, currentSchool}) => {
   const [selected, setSelected] = React.useState(null);
   const mapRef = React.useRef();
+
+  useEffect(() => {
+    console.log('Map.js current location', currentLocation)
+    console.log('Map.js current school', currentSchool)
+  }, [currentLocation, currentSchool]);
+
+
   const onMapLoad = React.useCallback((map) => {
     mapRef.current = map;
   }, []);
+
 
   return (
     <div>

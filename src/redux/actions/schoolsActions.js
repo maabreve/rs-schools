@@ -2,7 +2,7 @@ import * as types from "./actionTypes";
 import * as schoolsApi from "../../api/schoolsApi";
 import { beginApiCall, apiCallError } from "./apiStatusActions";
 
-export function loadSchoolsSuccess(schools) {
+ export function loadSchoolsSuccess(schools) {
   return { type: types.LOAD_SCHOOLS_SUCCESS, schools };
 }
 

@@ -1,5 +1,6 @@
 export default {
   schools: [],
-  location: {},
+  currentSchool: {},
+  currentLocation: {},
   apiCallsInProgress: 0
 };

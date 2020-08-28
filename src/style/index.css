@@ -22,8 +22,8 @@ code {
   background: none;
   border: none;
   position: absolute;
-  top: 20px;
-  right: 15px;
+  top: 19px;
+  right: 16px;
 }
 
 .locate img {
@@ -50,3 +50,22 @@ code {
 .p-info > p{
   margin-bottom: 5px;
 }
+
+.item-list {
+  padding:10px;
+  border-top: 1px solid #c3c3c3;
+  border-left: 1px solid #c3c3c3;
+  border-right: 1px solid #c3c3c3;
+  cursor: pointer;
+}
+
+.item-list:last-child {
+  padding: 10px;
+  border: 1px solid #c3c3c3;
+  cursor: pointer;
+}
+
+.item-list:hover {
+  background-color: #f0f0f0;
+}
+

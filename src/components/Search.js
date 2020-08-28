@@ -12,7 +12,7 @@ import {
 } from "@reach/combobox";
 import "@reach/combobox/styles.css";
 
-const Search = () => {
+const Search = ({handleSearch}) => {
   const {
     ready,
     value,
@@ -37,10 +37,7 @@ const Search = () => {
     try {
        const results = await getGeocode({ address });
        const { lat, lng } = await getLatLng(results[0]);
-      console.log(results);
-      console.log(lat, lng)
-       // panTo({ lat, lng });
-
+       handleSearch({...results[0], lat, lng } );
     } catch (error) {
       console.log("😱 Error: ", error);
     }

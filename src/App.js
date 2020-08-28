@@ -10,12 +10,12 @@ import { bindActionCreators } from "redux";
 import Toolbar from './components/Toolbar';
 import Map from './components/Map';
 import List from './components/List';
+import Spinner from './components/Spinner';
 import * as schoolsActions from "./redux/actions/schoolsActions";
-import * as locationActions from "./redux/actions/locationActions";
 
 const libraries = ["places"];
 
-const App = ({schools, location, actions}) => {
+const App = ({schools, currentLocation, currentSchool, loading, actions}) => {
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     libraries,
@@ -24,29 +24,30 @@ const App = ({schools, location, actions}) => {
   useEffect(() => {
     if (schools && schools.length === 0) {
       actions.loadSchools().catch(error => {
-        alert("Busca de escolas falhou" + error);
+        console.log("Busca de escolas falhou " + error);
       });
     }
-  }, [actions, schools]);
 
-  // const mapRef = React.useRef();
-  // const panTo = React.useCallback(({ lat, lng }) => {
-  //   mapRef.current.panTo({ lat, lng });
-  //   mapRef.current.setZoom(14);
-  // }, []);
+    // console.log('App.js current school', currentSchool);
+    // console.log('App.js current location', currentLocation);
+
+  }, [actions, schools, currentLocation, currentSchool]);
 
   if (loadError) return "Erro";
-  if (!isLoaded) return "Carregando...";
+  if (!isLoaded || loading) return <Spinner />;
 
   return (
     <>
       <Toolbar title="Escolas RS"></Toolbar>
       <Row className="no-margin">
         <Col sm={3} className=" relative">
-          <List schools={schools} />
+          <List />
         </Col>
         <Col sm={9}>
-          <Map markers={schools} />
+          <Map
+            markers={schools}
+            currentLocation={currentLocation}
+            currentSchool={currentSchool} />
         </Col>
       </Row>
     </>
@@ -55,7 +56,8 @@ const App = ({schools, location, actions}) => {
 
 App.propTypes = {
   schools: PropTypes.array.isRequired,
-  location: PropTypes.object.isRequired,
+  currentLocation: PropTypes.object.isRequired,
+  currentSchool: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired,
   loading: PropTypes.bool.isRequired
 };
@@ -63,10 +65,14 @@ App.propTypes = {
 function mapStateToProps(state) {
   return {
     schools: state.schools,
-    location:
-      !state.location
+    currentLocation:
+      !state.currentLocation
         ? {}
-        : state.location,
+        : state.currentLocation,
+    currentSchool:
+      !state.currentSchool
+        ? {}
+        : state.currentSchool,
     loading: state.apiCallsInProgress > 0
   };
 }
@@ -75,7 +81,6 @@ function mapDispatchToProps(dispatch) {
   return {
     actions: {
       loadSchools: bindActionCreators(schoolsActions.loadSchools, dispatch),
-      setLocation: bindActionCreators(locationActions.setLocation, dispatch),
     }
   };
 }

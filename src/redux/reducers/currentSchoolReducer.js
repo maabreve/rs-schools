@@ -1,10 +1,10 @@
 import * as types from "../actions/actionTypes";
 import initialState from "./initialState";
 
-export default function locationReducer(state = initialState.location, action) {
+export default function schoolsReducer(state = initialState.currentSchool, action) {
   switch (action.type) {
-    case types.SET_LOCATION:
-      return action.location;
+    case types.SET_CURRENT_SCHOOL:
+      return  action.currentSchool;
     default:
       return state;
   }
