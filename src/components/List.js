@@ -5,10 +5,14 @@ import { bindActionCreators } from "redux";
 
 import Search from './Search';
 import Locate from './Locate';
-import ListGroup from 'react-bootstrap/ListGroup';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import * as schoolsActions from "../redux/actions/schoolsActions";
 import * as locationActions from "../redux/actions/currentLocationActions";
-import * as currentSchoolsActions from "../redux/actions/curentSchoolActions";
+import * as currentSchoolsActions from "../redux/actions/currentSchoolActions";
+import { faRoute } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const List = ({schools, currentLocation, currentSchool, actions}) => {
   useEffect(() => {
@@ -33,15 +37,25 @@ const List = ({schools, currentLocation, currentSchool, actions}) => {
         <Search handleSearch={handleSearch} />
         <Locate handleLocateClick={handleLocateClick} />
       </div>
-      <div>
-        <ListGroup>
-          { schools && schools.length > 0 && schools.map(school =>
-            (<ListGroup.Item key={school.ID} action onClick={() => handleListItemClick(school)}>
-                {school.nome}
-            </ListGroup.Item>)
-          )}
-        </ListGroup>
-        </div>
+        <Container>
+        { schools && schools.length > 0 && schools.map(school => (
+            <Row key={school.ID} className="item-list">
+              <Col
+                key={school.ID + "col1"}
+                xs="9"
+                className="item-list-left"
+                onClick={() => handleListItemClick(school)}>
+                  {school.nome}
+              </Col>
+              <Col
+                key={school.ID + "col2"}
+                className="item-list-right">
+                  <span><FontAwesomeIcon icon={faRoute}/></span>
+              </Col>
+            </Row>
+
+        ))}
+        </Container>
     </div>
   )
 };

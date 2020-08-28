@@ -10,7 +10,9 @@ const markers = [{
     nome: 'Escola 1',
     email: 'escola1@gmail.com',
     site: 'www.escola1.com.br',
-    endereco: 'Rua Manuel da Silva Santos Xavier, 345'
+    endereco: 'PCA GARIBALDI',
+    numero: '1',
+    bairro: 'AZENHA'
   },
   {
     ID: 2,
@@ -20,7 +22,9 @@ const markers = [{
     nome: 'Escola 2',
     email: 'escola2@gmail.com',
     site: 'www.escola2.com.br',
-    endereco: 'Rua 2'
+    endereco: 'RUA VINTE E QUATRO DE OUTUBRO',
+    numero: '211',
+    bairro: 'INDEPENDÊNCIA'
   },
   {
     ID: 3,
@@ -30,7 +34,9 @@ const markers = [{
     nome: 'Escola 3',
     email: 'escola3@gmail.com',
     site: 'www.escola3.com.br',
-    endereco: 'Rua 3'
+    endereco: 'PCA JAYME TELLES',
+    numero: '1',
+    bairro: 'SANTANA'
   }
 ];
 

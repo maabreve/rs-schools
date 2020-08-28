@@ -13,9 +13,10 @@ code {
 }
 
 .search input {
-  padding: 0.3rem;
+  padding: 0.5rem;
   width: 100%;
   margin: 0 !important;
+  font-size: 0.8em;
 }
 
 .locate {
@@ -52,20 +53,35 @@ code {
 }
 
 .item-list {
-  padding:10px;
   border-top: 1px solid #c3c3c3;
   border-left: 1px solid #c3c3c3;
   border-right: 1px solid #c3c3c3;
-  cursor: pointer;
 }
 
 .item-list:last-child {
-  padding: 10px;
   border: 1px solid #c3c3c3;
-  cursor: pointer;
+  margin-bottom: 20px;
 }
 
 .item-list:hover {
+  cursor: pointer;
+}
+
+.item-list-left {
+  padding:10px;
+}
+
+.item-list-left:hover {
   background-color: #f0f0f0;
 }
 
+.item-list-right {
+  padding:10px;
+  text-align: center;
+  cursor: pointer;
+  border-left: 1px solid #c3c3c3;
+}
+
+.item-list-right:hover {
+  background-color: #f0f0f0;
+}

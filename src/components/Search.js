@@ -50,7 +50,7 @@ const Search = ({handleSearch}) => {
           value={value}
           onChange={handleInput}
           disabled={!ready}
-          placeholder="Informe seu endereço"
+          placeholder="Digite um local para ver as rotas"
         />
         <ComboboxPopover>
           <ComboboxList>

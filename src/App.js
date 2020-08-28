@@ -12,6 +12,7 @@ import Map from './components/Map';
 import List from './components/List';
 import Spinner from './components/Spinner';
 import * as schoolsActions from "./redux/actions/schoolsActions";
+import * as currentSchoolActions from "./redux/actions/currentSchoolActions";
 
 const libraries = ["places"];
 
@@ -27,14 +28,19 @@ const App = ({schools, currentLocation, currentSchool, loading, actions}) => {
         console.log("Busca de escolas falhou " + error);
       });
     }
-
-    // console.log('App.js current school', currentSchool);
-    console.log('App.js current location', currentLocation);
-
   }, [actions, schools, currentLocation, currentSchool]);
 
   if (loadError) return "Erro";
   if (!isLoaded || loading) return <Spinner />;
+
+  const handleCloseInfoMap = () => {
+    actions.setCurrentSchool({});
+  }
+
+  const center = {
+    lat: -30.036288,
+    lng: -51.215899
+  };
 
   return (
     <>
@@ -45,9 +51,11 @@ const App = ({schools, currentLocation, currentSchool, loading, actions}) => {
         </Col>
         <Col sm={9}>
           <Map
+            center={center}
             markers={schools}
             currentLocation={currentLocation}
-            currentSchool={currentSchool} />
+            currentSchool={currentSchool}
+            handleCloseInfoMap={handleCloseInfoMap}/>
         </Col>
       </Row>
     </>
@@ -81,6 +89,7 @@ function mapDispatchToProps(dispatch) {
   return {
     actions: {
       loadSchools: bindActionCreators(schoolsActions.loadSchools, dispatch),
+      setCurrentSchool: bindActionCreators(currentSchoolActions.setCurrentSchool, dispatch)
     }
   };
 }

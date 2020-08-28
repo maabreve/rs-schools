@@ -1,5 +1,11 @@
-import React, { useEffect } from 'react';
-import { GoogleMap, Marker, InfoWindow} from "@react-google-maps/api";
+import React, { useEffect, useState, useRef } from 'react';
+import {
+  GoogleMap,
+  Marker,
+  InfoWindow,
+  DirectionsRenderer,
+  DirectionsService,
+} from "@react-google-maps/api";
 
 import mapStyles from "../style/mapStyles";
 
@@ -14,14 +20,11 @@ const options = {
   zoomControl: true,
 };
 
-const center = {
-  lat: -30.036288,
-  lng: -51.215899
-};
 
-const Map = ({markers, currentLocation, currentSchool}) => {
-  const [selected, setSelected] = React.useState(null);
-  const mapRef = React.useRef();
+const Map = ({markers, center, currentLocation, currentSchool, handleCloseInfoMap}) => {
+  const [selected, setSelected] = useState(null);
+  const [response, setResponse] = useState(null);
+  const mapRef = useRef();
 
   useEffect(() => {
     if (Object.entries(currentSchool).length !== 0) {
@@ -29,7 +32,6 @@ const Map = ({markers, currentLocation, currentSchool}) => {
     }
 
     if (Object.entries(currentLocation).length !== 0) {
-
     }
 
   }, [currentLocation, currentSchool]);
@@ -39,13 +41,23 @@ const Map = ({markers, currentLocation, currentSchool}) => {
     mapRef.current = map;
   }, []);
 
+  const directionsCallback = (response) => {
+
+    if (response !== null) {
+      if (response.status === 'OK') {
+        setResponse(response)
+      } else {
+        console.log('response: ', response)
+      }
+    }
+  }
 
   return (
     <div>
       <GoogleMap
         id="map"
         mapContainerStyle={mapContainerStyle}
-        zoom={12}
+        zoom={14}
         center={center}
         options={options}
         onLoad={onMapLoad}>
@@ -61,30 +73,17 @@ const Map = ({markers, currentLocation, currentSchool}) => {
               url: `/school.svg`,
               origin: new window.google.maps.Point(0, 0),
               anchor: new window.google.maps.Point(15, 15),
-              scaledSize: new window.google.maps.Size(30, 30),
+                scaledSize: new window.google.maps.Size(30, 30),
             }}
           />
         ))}
-        {Object.entries(currentLocation).length !== 0 ? (
-           <Marker
-              key="center-mark"
-              position={{ lat: currentLocation.lat, lng: currentLocation.lng }}
-          />
-        ) : null}
 
-        {/* <Marker
-          key="center-mark"
-          position={{ lat: center.lat, lng: center.lng }}
-          onClick={() => {
-            // setSelected(marker);
-          }}
-        /> */}
-
-        {selected ? (
+        {selected && (
           <InfoWindow
             position={{ lat: selected.lat, lng: selected.lng }}
             onCloseClick={() => {
               setSelected(null);
+              handleCloseInfoMap();
             }}>
             <div className="p-info">
               <h3>
@@ -98,7 +97,54 @@ const Map = ({markers, currentLocation, currentSchool}) => {
               <p> Site: { selected.site}</p>
             </div>
           </InfoWindow>
-        ) : null}
+        ) }
+
+        {(
+            Object.entries(currentLocation).length !== 0 &&
+            Object.entries(currentSchool).length !== 0
+          ) && (
+            <DirectionsService
+              options={{
+                destination: {
+                  lat: currentLocation.lat,
+                  lng: currentLocation.lng
+                },
+                origin:{
+                  lat: currentSchool.lat,
+                  lng: currentSchool.lng
+                },
+                travelMode: 'DRIVING'
+              }}
+              callback={directionsCallback}
+              onLoad={directionsService => {
+                console.log('DirectionsService onLoad directionsService: ', directionsService)
+              }}
+              // optional
+              onUnmount={directionsService => {
+                console.log('DirectionsService onUnmount directionsService: ', directionsService)
+              }}
+            />
+          )
+        }
+
+        {
+          response !== null && (
+            <DirectionsRenderer
+              // required
+              options={{
+                directions: response
+              }}
+              // optional
+              onLoad={directionsRenderer => {
+                console.log('DirectionsRenderer onLoad directionsRenderer: ', directionsRenderer)
+              }}
+              // optional
+              onUnmount={directionsRenderer => {
+                console.log('DirectionsRenderer onUnmount directionsRenderer: ', directionsRenderer)
+              }}
+            />
+          )
+        }
       </GoogleMap>
     </div>
   )
