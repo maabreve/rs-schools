@@ -1,8 +1,8 @@
 import React from 'react';
 import
-  usePlacesAutocomplete,
-  { getGeocode, getLatLng }
-from "use-places-autocomplete";
+usePlacesAutocomplete,
+{ getGeocode, getLatLng }
+  from "use-places-autocomplete";
 import {
   Combobox,
   ComboboxInput,
@@ -12,19 +12,14 @@ import {
 } from "@reach/combobox";
 import "@reach/combobox/styles.css";
 
-const Search = ({handleSearch}) => {
+const Search = ({ handleSearch }) => {
   const {
     ready,
     value,
     suggestions: { status, data },
     setValue,
     clearSuggestions,
-  } = usePlacesAutocomplete({
-    requestOptions: {
-      location: { lat: () => 43.6532, lng: () => -79.3832 },
-      radius: 100 * 1000,
-    },
-  });
+  } = usePlacesAutocomplete();
 
   const handleInput = (e) => {
     setValue(e.target.value);
@@ -35,9 +30,9 @@ const Search = ({handleSearch}) => {
     clearSuggestions();
 
     try {
-       const results = await getGeocode({ address });
-       const { lat, lng } = await getLatLng(results[0]);
-       handleSearch({...results[0], lat, lng } );
+      const results = await getGeocode({ address });
+      const { lat, lng } = await getLatLng(results[0]);
+      handleSearch({ ...results[0], lat, lng });
     } catch (error) {
       console.log("😱 Error: ", error);
     }
@@ -57,8 +52,9 @@ const Search = ({handleSearch}) => {
             {status === "OK" &&
               data.map(({ id, description }) => {
                 return (
-                <ComboboxOption key={Math.random().toString()} value={description} />
-              )})}
+                  <ComboboxOption key={Math.random().toString()} value={description} />
+                )
+              })}
           </ComboboxList>
         </ComboboxPopover>
       </Combobox>

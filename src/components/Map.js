@@ -21,7 +21,12 @@ const options = {
 };
 
 
-const Map = ({markers, center, currentLocation, currentSchool, handleCloseInfoMap}) => {
+const Map = ({
+  markers,
+  center,
+  currentLocation,
+  currentSchool,
+  handleCloseInfoMap }) => {
   const [selected, setSelected] = useState(null);
   const [response, setResponse] = useState(null);
   const mapRef = useRef();
@@ -30,10 +35,7 @@ const Map = ({markers, center, currentLocation, currentSchool, handleCloseInfoMa
     if (Object.entries(currentSchool).length !== 0) {
       setSelected(currentSchool);
     }
-
-    if (Object.entries(currentLocation).length !== 0) {
-    }
-
+    console.log(currentLocation)
   }, [currentLocation, currentSchool]);
 
 
@@ -62,10 +64,10 @@ const Map = ({markers, center, currentLocation, currentSchool, handleCloseInfoMa
         options={options}
         onLoad={onMapLoad}>
 
-        { markers.map(marker => (
+        {markers && markers.map(marker => (
           <Marker
-            key={`${marker.lat}-${marker.lng}`}
-            position={{ lat: marker.lat, lng: marker.lng }}
+            key={`${marker.latitude}-${marker.longitude}-${marker.codigo}`}
+            position={{ lat: marker.latitude, lng: marker.longitude }}
             onClick={() => {
               setSelected(marker);
             }}
@@ -73,56 +75,50 @@ const Map = ({markers, center, currentLocation, currentSchool, handleCloseInfoMa
               url: `/school.svg`,
               origin: new window.google.maps.Point(0, 0),
               anchor: new window.google.maps.Point(15, 15),
-                scaledSize: new window.google.maps.Size(30, 30),
+              scaledSize: new window.google.maps.Size(30, 30),
             }}
           />
         ))}
 
         {selected && (
           <InfoWindow
-            position={{ lat: selected.lat, lng: selected.lng }}
+            position={{ lat: selected.latitude, lng: selected.longitude }}
             onCloseClick={() => {
               setSelected(null);
               handleCloseInfoMap();
             }}>
             <div className="p-info">
-              <h3>
+              <h5>
                 <span role="img" aria-label="bear">
                   🏫
                 </span>{" "}
-                { selected.nome}
-              </h3>
-              <p> Endereço: { selected.endereco}</p>
-              <p> Email: { selected.email}</p>
-              <p> Site: { selected.site}</p>
+                {selected.nome}
+              </h5>
+              <p> Endereço: {`${selected.logradouro}, ${selected.numero}`}</p>
+              <p> Bairro: {selected.bairro}</p>
+              <p> Email: {selected.email}</p>
+              <p> Site: {selected.site}</p>
             </div>
           </InfoWindow>
-        ) }
+        )}
 
         {(
-            Object.entries(currentLocation).length !== 0 &&
-            Object.entries(currentSchool).length !== 0
-          ) && (
+          Object.entries(currentLocation).length !== 0 &&
+          Object.entries(currentSchool).length !== 0
+        ) && (
             <DirectionsService
               options={{
                 destination: {
                   lat: currentLocation.lat,
                   lng: currentLocation.lng
                 },
-                origin:{
-                  lat: currentSchool.lat,
-                  lng: currentSchool.lng
+                origin: {
+                  lat: currentSchool.latitude,
+                  lng: currentSchool.longitude
                 },
                 travelMode: 'DRIVING'
               }}
               callback={directionsCallback}
-              onLoad={directionsService => {
-                console.log('DirectionsService onLoad directionsService: ', directionsService)
-              }}
-              // optional
-              onUnmount={directionsService => {
-                console.log('DirectionsService onUnmount directionsService: ', directionsService)
-              }}
             />
           )
         }
@@ -130,17 +126,8 @@ const Map = ({markers, center, currentLocation, currentSchool, handleCloseInfoMa
         {
           response !== null && (
             <DirectionsRenderer
-              // required
               options={{
                 directions: response
-              }}
-              // optional
-              onLoad={directionsRenderer => {
-                console.log('DirectionsRenderer onLoad directionsRenderer: ', directionsRenderer)
-              }}
-              // optional
-              onUnmount={directionsRenderer => {
-                console.log('DirectionsRenderer onUnmount directionsRenderer: ', directionsRenderer)
               }}
             />
           )

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
@@ -14,9 +14,9 @@ import * as currentSchoolsActions from "../redux/actions/currentSchoolActions";
 import { faRoute } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const List = ({schools, currentLocation, currentSchool, actions}) => {
+const List = ({ schools, currentLocation, currentSchool, actions }) => {
   useEffect(() => {
-  //  console.log('List.js current location', currentLocation)
+    //  console.log('List.js current location', currentLocation)
   }, [currentLocation, currentSchool]);
 
   const handleListItemClick = (school) => {
@@ -37,25 +37,26 @@ const List = ({schools, currentLocation, currentSchool, actions}) => {
         <Search handleSearch={handleSearch} />
         <Locate handleLocateClick={handleLocateClick} />
       </div>
-        <Container>
-        { schools && schools.length > 0 && schools.map(school => (
-            <Row key={school.ID} className="item-list">
-              <Col
-                key={school.ID + "col1"}
-                xs="9"
-                className="item-list-left"
-                onClick={() => handleListItemClick(school)}>
-                  {school.nome}
-              </Col>
-              <Col
-                key={school.ID + "col2"}
-                className="item-list-right">
-                  <span><FontAwesomeIcon icon={faRoute}/></span>
-              </Col>
-            </Row>
+      <Container>
+        {schools && schools.length > 0 && schools.map(school => (
+          <Row key={school.id} className="item-list">
+            <Col
+              key={school.id + "col1"}
+              xs="9"
+              className="item-list-left">
+              <h1>{school.nome}</h1>
+              <p>{school.bairro}</p>
+            </Col>
+            <Col
+              key={school.id + "col2"}
+              className="item-list-right"
+              onClick={() => handleListItemClick(school)}>
+              <span><FontAwesomeIcon icon={faRoute} /></span>
+            </Col>
+          </Row>
 
         ))}
-        </Container>
+      </Container>
     </div>
   )
 };
