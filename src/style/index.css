@@ -79,6 +79,7 @@ code {
 .item-list-left {
   font-size: 12px;
   font-weight: bold;
+  cursor: pointer;
 }
 
 

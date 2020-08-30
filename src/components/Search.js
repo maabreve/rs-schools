@@ -34,7 +34,7 @@ const Search = ({ handleSearch }) => {
       const { lat, lng } = await getLatLng(results[0]);
       handleSearch({ ...results[0], lat, lng });
     } catch (error) {
-      console.log("😱 Error: ", error);
+      console.log("😱 Erro: ", error);
     }
   };
 

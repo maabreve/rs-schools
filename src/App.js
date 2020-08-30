@@ -3,8 +3,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { useLoadScript } from "@react-google-maps/api";
-import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
 import Toolbar from './components/Toolbar';
@@ -13,10 +13,18 @@ import List from './components/List';
 import Spinner from './components/Spinner';
 import * as schoolsActions from "./redux/actions/schoolsActions";
 import * as currentSchoolActions from "./redux/actions/currentSchoolActions";
+import * as currentRouteActions from "./redux/actions/currentRouteActions";
 
 const libraries = ["places"];
 
-const App = ({schools, currentLocation, currentSchool, loading, actions}) => {
+const App = ({
+  schools,
+  currentLocation,
+  currentSchool,
+  currentRoute,
+  loading,
+  actions }) => {
+
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     libraries,
@@ -28,13 +36,13 @@ const App = ({schools, currentLocation, currentSchool, loading, actions}) => {
         console.log("Busca de escolas falhou " + error);
       });
     }
-  }, [actions, schools, currentLocation, currentSchool]);
+  }, [actions, schools]);
 
   if (loadError) return "Erro";
   if (!isLoaded || loading) return <Spinner />;
 
   const handleCloseInfoMap = () => {
-    actions.setCurrentSchool({});
+    actions.setCurrentSchool(null);
   }
 
   const center = {
@@ -55,6 +63,7 @@ const App = ({schools, currentLocation, currentSchool, loading, actions}) => {
             markers={schools}
             currentLocation={currentLocation}
             currentSchool={currentSchool}
+            currentRoute={currentRoute}
             handleCloseInfoMap={handleCloseInfoMap}/>
         </Col>
       </Row>
@@ -64,8 +73,9 @@ const App = ({schools, currentLocation, currentSchool, loading, actions}) => {
 
 App.propTypes = {
   schools: PropTypes.array.isRequired,
-  currentLocation: PropTypes.object.isRequired,
-  currentSchool: PropTypes.object.isRequired,
+  currentLocation: PropTypes.object,
+  currentSchool: PropTypes.object,
+  currentRoute: PropTypes.object,
   actions: PropTypes.object.isRequired,
   loading: PropTypes.bool.isRequired
 };
@@ -73,14 +83,9 @@ App.propTypes = {
 function mapStateToProps(state) {
   return {
     schools: state.schools,
-    currentLocation:
-      !state.currentLocation
-        ? {}
-        : state.currentLocation,
-    currentSchool:
-      !state.currentSchool
-        ? {}
-        : state.currentSchool,
+    currentLocation: state.currentLocation,
+    currentSchool: state.currentSchool,
+    currentRoute: state.currentRoute,
     loading: state.apiCallsInProgress > 0
   };
 }
@@ -89,7 +94,10 @@ function mapDispatchToProps(dispatch) {
   return {
     actions: {
       loadSchools: bindActionCreators(schoolsActions.loadSchools, dispatch),
-      setCurrentSchool: bindActionCreators(currentSchoolActions.setCurrentSchool, dispatch)
+      setCurrentSchool:
+        bindActionCreators(currentSchoolActions.setCurrentSchool, dispatch),
+      setCurrentRoute:
+        bindActionCreators(currentRouteActions.setCurrentRoute, dispatch),
     }
   };
 }

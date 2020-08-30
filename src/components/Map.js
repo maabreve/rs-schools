@@ -20,23 +20,24 @@ const options = {
   zoomControl: true,
 };
 
-
 const Map = ({
   markers,
   center,
   currentLocation,
   currentSchool,
+  currentRoute,
   handleCloseInfoMap }) => {
-  const [selected, setSelected] = useState(null);
+
+  const [schoolInfo, setSchoolInfo] = useState(null);
+  const [routeDestination, setRouteDestination] = useState(null);
   const [response, setResponse] = useState(null);
+
   const mapRef = useRef();
 
   useEffect(() => {
-    if (Object.entries(currentSchool).length !== 0) {
-      setSelected(currentSchool);
-    }
-    console.log(currentLocation)
-  }, [currentLocation, currentSchool]);
+    setSchoolInfo(currentSchool);
+    setRouteDestination(currentRoute);
+  }, [currentSchool, currentRoute]);
 
 
   const onMapLoad = React.useCallback((map) => {
@@ -44,7 +45,6 @@ const Map = ({
   }, []);
 
   const directionsCallback = (response) => {
-
     if (response !== null) {
       if (response.status === 'OK') {
         setResponse(response)
@@ -69,7 +69,7 @@ const Map = ({
             key={`${marker.latitude}-${marker.longitude}-${marker.codigo}`}
             position={{ lat: marker.latitude, lng: marker.longitude }}
             onClick={() => {
-              setSelected(marker);
+              setSchoolInfo(marker);
             }}
             icon={{
               url: `/school.svg`,
@@ -80,11 +80,11 @@ const Map = ({
           />
         ))}
 
-        {selected && (
+        {schoolInfo && (
           <InfoWindow
-            position={{ lat: selected.latitude, lng: selected.longitude }}
+            position={{ lat: schoolInfo.latitude, lng: schoolInfo.longitude }}
             onCloseClick={() => {
-              setSelected(null);
+              setSchoolInfo(null);
               handleCloseInfoMap();
             }}>
             <div className="p-info">
@@ -92,19 +92,18 @@ const Map = ({
                 <span role="img" aria-label="bear">
                   🏫
                 </span>{" "}
-                {selected.nome}
+                {schoolInfo.nome}
               </h5>
-              <p> Endereço: {`${selected.logradouro}, ${selected.numero}`}</p>
-              <p> Bairro: {selected.bairro}</p>
-              <p> Email: {selected.email}</p>
-              <p> Site: {selected.site}</p>
+              <p> Endereço: {`${schoolInfo.logradouro}, ${schoolInfo.numero}`}</p>
+              <p> Bairro: {schoolInfo.bairro}</p>
+              <p> Email: {schoolInfo.email}</p>
+              <p> Site: {schoolInfo.site}</p>
             </div>
           </InfoWindow>
         )}
 
         {(
-          Object.entries(currentLocation).length !== 0 &&
-          Object.entries(currentSchool).length !== 0
+          currentLocation && routeDestination
         ) && (
             <DirectionsService
               options={{
@@ -113,8 +112,8 @@ const Map = ({
                   lng: currentLocation.lng
                 },
                 origin: {
-                  lat: currentSchool.latitude,
-                  lng: currentSchool.longitude
+                  lat: routeDestination.latitude,
+                  lng: routeDestination.longitude
                 },
                 travelMode: 'DRIVING'
               }}

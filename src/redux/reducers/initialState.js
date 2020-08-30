@@ -1,6 +1,7 @@
 export default {
   schools: [],
-  currentSchool: {},
-  currentLocation: {},
+  currentSchool: null,
+  currentLocation: null,
+  currentRoute: null,
   apiCallsInProgress: 0
 };

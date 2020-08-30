@@ -1,34 +1,39 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import { faRoute } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { bindActionCreators } from "redux";
-
-import Search from './Search';
-import Locate from './Locate';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import * as schoolsActions from "../redux/actions/schoolsActions";
+
+import Search from './Search';
+import Locate from './Locate';
 import * as locationActions from "../redux/actions/currentLocationActions";
 import * as currentSchoolsActions from "../redux/actions/currentSchoolActions";
-import { faRoute } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import * as currentRouteActions from "../redux/actions/currentRouteActions";
 
-const List = ({ schools, currentLocation, currentSchool, actions }) => {
-  useEffect(() => {
-    //  console.log('List.js current location', currentLocation)
-  }, [currentLocation, currentSchool]);
-
-  const handleListItemClick = (school) => {
-    actions.setCurrentSchool(school)
-  }
+const List = ({
+    schools,
+    actions }) => {
 
   const handleSearch = (value) => {
-    actions.setCurrentLocation(value)
+    actions.setCurrentLocation(value);
   }
 
   const handleLocateClick = (location) => {
-    actions.setCurrentLocation(location)
+    actions.setCurrentLocation(location);
+  }
+
+  const handleSchoolClick = (school) => {
+    actions.setCurrentSchool(school);
+    actions.setCurrentRoute(null);
+  }
+
+  const handleRouteClick = (school) => {
+    actions.setCurrentRoute(school);
+    actions.setCurrentSchool(null);
   }
 
   return (
@@ -43,14 +48,15 @@ const List = ({ schools, currentLocation, currentSchool, actions }) => {
             <Col
               key={school.id + "col1"}
               xs="9"
-              className="item-list-left">
+              className="item-list-left"
+              onClick={() => handleSchoolClick(school)}>
               <h1>{school.nome}</h1>
               <p>{school.bairro}</p>
             </Col>
             <Col
               key={school.id + "col2"}
               className="item-list-right"
-              onClick={() => handleListItemClick(school)}>
+              onClick={() => handleRouteClick(school)}>
               <span><FontAwesomeIcon icon={faRoute} /></span>
             </Col>
           </Row>
@@ -63,32 +69,29 @@ const List = ({ schools, currentLocation, currentSchool, actions }) => {
 
 List.propTypes = {
   schools: PropTypes.array.isRequired,
-  currentLocation: PropTypes.object.isRequired,
+  currentLocation: PropTypes.object,
+  currentRoute: PropTypes.object,
   actions: PropTypes.object.isRequired,
 };
 
 function mapStateToProps(state) {
   return {
     schools: state.schools,
-    currentLocation:
-      !state.currentLocation
-        ? {}
-        : state.currentLocation,
-    currentSchool:
-      !state.currentSchool
-        ? {}
-        : state.currentSchool,
+    currentLocation: state.currentLocation,
+    currentSchool: state.currentSchool,
+    currentRoute: state.currentRoute,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     actions: {
-      loadSchools: bindActionCreators(schoolsActions.loadSchools, dispatch),
       setCurrentSchool:
         bindActionCreators(currentSchoolsActions.setCurrentSchool, dispatch),
       setCurrentLocation:
         bindActionCreators(locationActions.setCurrentLocation, dispatch),
+      setCurrentRoute:
+        bindActionCreators(currentRouteActions.setCurrentRoute, dispatch)
     }
   };
 }
