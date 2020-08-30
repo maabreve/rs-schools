@@ -25,7 +25,6 @@ const List = ({
     setSchoolList(schools);
   }, [schools]);
 
-
   const handleSearch = (value) => {
     actions.setCurrentLocation(value);
   }
@@ -50,15 +49,20 @@ const List = ({
     e.preventDefault();
     const searchValue = e.target.value;
     if (searchValue.trim() !== "") {
-      console.log(searchValue)
-     const filtered = schools.filter(s=> s.nome.toLowerCase().indexOf(searchValue.toLowerCase()) !== -1);
-     console.log(filtered)
-     setSchoolList(filtered);
+     const filtered = schools.filter(s=>
+        s.nome.toLowerCase().indexOf(searchValue.toLowerCase()) !== -1);
 
+      setSchoolList(filtered);
     } else {
       setSchoolList(schools);
     }
   }
+
+  const paginateArray = (array, limit, page) =>  {
+    return array.slice((page - 1) * limit, page * limit);
+  }
+
+
 
   return (
     <div>
@@ -90,10 +94,10 @@ const List = ({
                 className="item-list-right"
                 onClick={() => handleRouteClick(school)}>
                 <span><FontAwesomeIcon icon={faRoute} /></span>
+                <p>120 km</p>
               </Col>
             }
           </Row>
-
         ))}
       </Container>
     </div>
@@ -124,7 +128,7 @@ function mapDispatchToProps(dispatch) {
       setCurrentLocation:
         bindActionCreators(locationActions.setCurrentLocation, dispatch),
       setCurrentRoute:
-        bindActionCreators(currentRouteActions.setCurrentRoute, dispatch)
+        bindActionCreators(currentRouteActions.setCurrentRoute, dispatch),
     }
   };
 }

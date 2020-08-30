@@ -4,7 +4,7 @@ import {
   Marker,
   InfoWindow,
   DirectionsRenderer,
-  DirectionsService,
+  DirectionsService
 } from "@react-google-maps/api";
 
 import mapStyles from "../style/mapStyles";
@@ -26,6 +26,7 @@ const Map = ({
   currentLocation,
   currentSchool,
   currentRoute,
+  setDistanceMatrix,
   handleCloseInfoMap }) => {
 
   const [schoolInfo, setSchoolInfo] = useState(null);

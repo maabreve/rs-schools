@@ -13,7 +13,6 @@ import List from './components/List';
 import Spinner from './components/Spinner';
 import * as schoolsActions from "./redux/actions/schoolsActions";
 import * as currentSchoolActions from "./redux/actions/currentSchoolActions";
-import * as currentRouteActions from "./redux/actions/currentRouteActions";
 
 const libraries = ["places"];
 
@@ -45,6 +44,10 @@ const App = ({
     actions.setCurrentSchool(null);
   }
 
+  const setDistanceMatrix = (matrix) => {
+    console.log('Ap.js', matrix)
+  }
+
   const center = {
     lat: -30.036288,
     lng: -51.215899
@@ -64,6 +67,7 @@ const App = ({
             currentLocation={currentLocation}
             currentSchool={currentSchool}
             currentRoute={currentRoute}
+            setDistanceMatrix={setDistanceMatrix}
             handleCloseInfoMap={handleCloseInfoMap}/>
         </Col>
       </Row>
@@ -96,8 +100,6 @@ function mapDispatchToProps(dispatch) {
       loadSchools: bindActionCreators(schoolsActions.loadSchools, dispatch),
       setCurrentSchool:
         bindActionCreators(currentSchoolActions.setCurrentSchool, dispatch),
-      setCurrentRoute:
-        bindActionCreators(currentRouteActions.setCurrentRoute, dispatch),
     }
   };
 }
