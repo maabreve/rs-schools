@@ -12,7 +12,7 @@ code {
     monospace;
 }
 
-.search input {
+input {
   padding: 0.5rem;
   width: 100%;
   margin: 0 !important;
@@ -48,6 +48,10 @@ code {
   width: 100% !important;
 }
 
+.mt-15 {
+  margin-top: 15px !important;
+}
+
 .p-info > p{
   margin-bottom: 5px;
 }
@@ -81,7 +85,6 @@ code {
   font-weight: bold;
   cursor: pointer;
 }
-
 
 .item-list-right {
   text-align: center;

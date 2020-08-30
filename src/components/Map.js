@@ -45,7 +45,7 @@ const Map = ({
   }, []);
 
   const directionsCallback = (response) => {
-    if (response !== null) {
+    if (response) {
       if (response.status === 'OK') {
         setResponse(response)
       } else {
@@ -123,7 +123,7 @@ const Map = ({
         }
 
         {
-          response !== null && (
+          response && (
             <DirectionsRenderer
               options={{
                 directions: response

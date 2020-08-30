@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { faRoute } from "@fortawesome/free-solid-svg-icons";
@@ -16,10 +16,22 @@ import * as currentRouteActions from "../redux/actions/currentRouteActions";
 
 const List = ({
     schools,
+    currentLocation,
     actions }) => {
+
+  const [schoolList, setSchoolList] = useState([]);
+
+  useEffect(() => {
+    setSchoolList(schools);
+  }, [schools]);
+
 
   const handleSearch = (value) => {
     actions.setCurrentLocation(value);
+  }
+
+  const clearSearch = () => {
+    actions.setCurrentLocation(null);
   }
 
   const handleLocateClick = (location) => {
@@ -28,22 +40,41 @@ const List = ({
 
   const handleSchoolClick = (school) => {
     actions.setCurrentSchool(school);
-    actions.setCurrentRoute(null);
   }
 
   const handleRouteClick = (school) => {
     actions.setCurrentRoute(school);
-    actions.setCurrentSchool(null);
+  }
+
+  const searchSchool = (e) => {
+    e.preventDefault();
+    const searchValue = e.target.value;
+    if (searchValue.trim() !== "") {
+      console.log(searchValue)
+     const filtered = schools.filter(s=> s.nome.toLowerCase().indexOf(searchValue.toLowerCase()) !== -1);
+     console.log(filtered)
+     setSchoolList(filtered);
+
+    } else {
+      setSchoolList(schools);
+    }
   }
 
   return (
     <div>
       <div className="px-15">
-        <Search handleSearch={handleSearch} />
+        <Search
+          handleSearch={handleSearch}
+          clearSearch={clearSearch} />
+        <input
+          type="text"
+          placeholder="Pesquisar escola"
+          className="mt-15"
+          onChange={searchSchool} />
         <Locate handleLocateClick={handleLocateClick} />
       </div>
       <Container>
-        {schools && schools.length > 0 && schools.map(school => (
+        {schoolList && schoolList.length > 0 && schoolList.map(school => (
           <Row key={school.id} className="item-list">
             <Col
               key={school.id + "col1"}
@@ -53,12 +84,14 @@ const List = ({
               <h1>{school.nome}</h1>
               <p>{school.bairro}</p>
             </Col>
-            <Col
-              key={school.id + "col2"}
-              className="item-list-right"
-              onClick={() => handleRouteClick(school)}>
-              <span><FontAwesomeIcon icon={faRoute} /></span>
-            </Col>
+            {currentLocation &&
+              <Col
+                key={school.id + "col2"}
+                className="item-list-right"
+                onClick={() => handleRouteClick(school)}>
+                <span><FontAwesomeIcon icon={faRoute} /></span>
+              </Col>
+            }
           </Row>
 
         ))}

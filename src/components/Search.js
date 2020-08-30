@@ -12,7 +12,7 @@ import {
 } from "@reach/combobox";
 import "@reach/combobox/styles.css";
 
-const Search = ({ handleSearch }) => {
+const Search = ({ handleSearch, clearSearch }) => {
   const {
     ready,
     value,
@@ -23,6 +23,9 @@ const Search = ({ handleSearch }) => {
 
   const handleInput = (e) => {
     setValue(e.target.value);
+    if (e.target.value.trim() === "") {
+      clearSearch();
+    }
   };
 
   const handleSelect = async (address) => {
