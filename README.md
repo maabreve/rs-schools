@@ -18,6 +18,11 @@ Rio Grande do Sul Schools
 - cd rs-schools
 - yarn
 
+
+## Api Configuration
+- .env file - Change REACT_APP_API_URL
+
+
 ## Development Running
 
 - yarn start
