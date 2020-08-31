@@ -1,6 +1,6 @@
 import { handleResponse, handleError } from "./apiUtils";
 
-const baseUrl = process.env.API_URL + "/schools/";
+const baseUrl = process.env.REACT_APP_API_URL + "/schools/";
 const markers = [
   {
     "dataExtracao": "2020-01-01T04:16:16.947",
