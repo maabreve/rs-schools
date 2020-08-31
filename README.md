@@ -25,7 +25,7 @@ Rio Grande do Sul Schools
 
 
 ## Api Configuration
-- .env file - Change REACT_APP_API_URL
+- .env file - change REACT_APP_API_URL
 
 
 ## Development Running
