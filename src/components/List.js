@@ -7,6 +7,8 @@ import { bindActionCreators } from "redux";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import ButtonGroup  from 'react-bootstrap/ButtonGroup';
+import Button from 'react-bootstrap/Button';
 
 import Search from './Search';
 import Locate from './Locate';
@@ -14,16 +16,21 @@ import * as locationActions from "../redux/actions/currentLocationActions";
 import * as currentSchoolsActions from "../redux/actions/currentSchoolActions";
 import * as currentRouteActions from "../redux/actions/currentRouteActions";
 
+const pageLimit = 7;
 const List = ({
     schools,
     currentLocation,
     actions }) => {
 
   const [schoolList, setSchoolList] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [lastPage, setLastPage] = useState(1);
 
   useEffect(() => {
-    setSchoolList(schools);
-  }, [schools]);
+    const schoolsPaginated = paginateArray(schools, pageLimit, currentPage);
+    setSchoolList(schoolsPaginated);
+    setLastPage(Math.ceil(schools.length / pageLimit));
+  }, [currentPage, schools]);
 
   const handleSearch = (value) => {
     actions.setCurrentLocation(value);
@@ -52,17 +59,33 @@ const List = ({
      const filtered = schools.filter(s=>
         s.nome.toLowerCase().indexOf(searchValue.toLowerCase()) !== -1);
 
-      setSchoolList(filtered);
+      const schoolsFilteredPaginated = paginateArray(filtered, pageLimit, 1);
+      setCurrentPage(1);
+      setSchoolList(schoolsFilteredPaginated);
     } else {
-      setSchoolList(schools);
+      const schoolsFilteredPaginated = paginateArray(schools, pageLimit, 1);
+      setCurrentPage(1);
+      setSchoolList(schoolsFilteredPaginated);
     }
   }
+
+  const nextPage = (e) => {
+    const schoolsPaginated = paginateArray(schoolList, pageLimit, currentPage + 1);
+    setCurrentPage(currentPage + 1);
+    setSchoolList(schoolsPaginated)
+  }
+
+  const previousPage = (e) => {
+    const schoolsPaginated = paginateArray(schoolList, pageLimit, currentPage - 1);
+
+    setCurrentPage(currentPage - 1);
+    setSchoolList(schoolsPaginated)
+  }
+
 
   const paginateArray = (array, limit, page) =>  {
     return array.slice((page - 1) * limit, page * limit);
   }
-
-
 
   return (
     <div>
@@ -94,12 +117,18 @@ const List = ({
                 className="item-list-right"
                 onClick={() => handleRouteClick(school)}>
                 <span><FontAwesomeIcon icon={faRoute} /></span>
-                <p>120 km</p>
               </Col>
             }
           </Row>
         ))}
       </Container>
+      <div className="text-center mb-15">
+        <Button disabled={currentPage === 1} onClick={previousPage}>
+            Página Anterior
+        </Button>
+        {" "}
+        <Button disabled={currentPage === lastPage} onClick={nextPage}>Próxima Página</Button>
+      </div>
     </div>
   )
 };

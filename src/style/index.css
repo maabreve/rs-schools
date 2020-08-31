@@ -52,6 +52,10 @@ input {
   margin-top: 15px !important;
 }
 
+.mb-15 {
+  margin-bottom: 15px !important;
+}
+
 .p-info > p{
   margin-bottom: 5px;
 }

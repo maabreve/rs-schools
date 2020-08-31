@@ -95,7 +95,9 @@ const Map = ({
                 </span>{" "}
                 {schoolInfo.nome}
               </h5>
-              <p> Endereço: {`${schoolInfo.logradouro}, ${schoolInfo.numero}`}</p>
+              <p>
+                Endereço: {`${schoolInfo.logradouro}, ${schoolInfo.numero}`}
+              </p>
               <p> Bairro: {schoolInfo.bairro}</p>
               <p> Email: {schoolInfo.email}</p>
               <p> Site: {schoolInfo.site}</p>
