@@ -22,7 +22,7 @@ Rio Grande do Sul Schools
 
 - yarn start
 
-# Build
+## Build
 
 - yarn build
 
