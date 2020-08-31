@@ -6,6 +6,11 @@ Rio Grande do Sul Schools
 
 - Source Code: https://github.com/maabreve/rs-schools
 
+## Prerequisites
+
+- node js version 12.16.1
+- create-react-app
+
 ## Technologies
 
 - React
