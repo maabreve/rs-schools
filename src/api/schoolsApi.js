@@ -12961,12 +12961,12 @@ const markers = [
 ]
 
 export const getSchools = async () => {
-  // return new Promise(resolve => setTimeout(() => {
-  //   resolve(markers)
+  return new Promise(resolve => setTimeout(() => {
+    resolve(markers)
 
-  // }, 2000));
+  }, 2000));
 
-  return fetch(baseUrl)
-    .then(handleResponse)
-    .catch(handleError);
+  // return fetch(baseUrl)
+  //   .then(handleResponse)
+  //   .catch(handleError);
 }

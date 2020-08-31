@@ -56,8 +56,8 @@ const App = ({
   return (
     <>
       <Toolbar title="Escolas RS"></Toolbar>
-      <Row className="no-margin">
-        <Col sm={3} className=" relative">
+      <Row className="no-margin" >
+        <Col sm={3} className=" relative" style={{ overflowY: 'scroll', height: 'calc(100vh - 60px)'}}>
           <List />
         </Col>
         <Col sm={9}>
